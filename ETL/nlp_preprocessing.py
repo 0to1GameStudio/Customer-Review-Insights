@@ -16,11 +16,11 @@ class nlp:
         return df.head()
         
 
-
-file_name= r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Dataset-SA.csv'
-data_reader = nlp(file_name)
-datas = data_reader.extract()
-print(datas)
+if __name__ == '__main__':
+    file_name= r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Dataset-SA.csv'
+    data_reader = nlp(file_name)
+    datas = data_reader.extract()
+    print(datas)
 
 
 
