@@ -1,4 +1,4 @@
-#Customer Review Insights: An ETL and Sentiment Analysis Approach
+Customer Review Insights: An ETL and Sentiment Analysis Approach
 
 The project is about implementing a scalable ETL (Extract, Transform, Load) 
 pipeline that processes a large volume of textual data (customer reviews) stored in a CSV file.
