@@ -9,6 +9,5 @@ Tools And Technologies:
 •	Programming Language: Python.
 •	Libraries:
     o	Data Processing: Pandas.
-    o	NLP: Hugging-Face (Transformers), Text Blob, or spaCy.
     o	Database: PostgreSQL.
 
