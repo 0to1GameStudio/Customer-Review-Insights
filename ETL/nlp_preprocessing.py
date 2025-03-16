@@ -4,49 +4,75 @@ print('NLP Pre-Processing...')
 
 # Setting up or loading CSV file into Python environment.
 class nlp:
-    def __init__(self, filename):
-        self.filename = filename 
+    def __init__(self,input_filename,output_filename):
+        self.input_filename = input_filename
+        self.output_filename = output_filename
+        self.data = None
 
     def extract(self):
         # Load the CSV file
-        df = pd.read_csv(self.filename)
-        return df.head()
+        try:
+            self.data = pd.read_csv(self.input_filename)
+            print('Data Extraction Succesful.\n')
+        except Exception as e:
+            print(f'Error during extraction {e}')
 
-    def transform(self, df):
+
+    def transform(self):
         # Convert 'Review' column to string and preprocess
-        df['Review'] = df['Review'].astype(str)
-        df['Review'] = df['Review'].str.replace(r'[!,@,#]', '', regex=True)
-        df['Review'] = df['Review'].str.lower()
+        print(self.data)        
+        if self.data is not None:
+        
+            print('\n Deleting the Duplicates placed in dataset.\n ')
+            # Remove rows with null values
+            self.data = self.data.dropna()
+            
+            self.data['Review'] = self.data['Review'].astype(str)
+            self.data['Review'] = self.data['Review'].str.replace(r'[!,@,#]', '', regex=True)
+            self.data['Review'] = self.data['Review'].str.lower()
+            
+            # Convert 'Summary' column to string and preprocess
+            self.data['Summary'] = self.data['Summary'].astype(str)
+            self.data['Summary'] = self.data['Summary'].str.lower()
 
-        # Convert 'Summary' column to string and preprocess
-        df['Summary'] = df['Summary'].astype(str)
-        df['Summary'] = df['Summary'].str.lower()
+            print('\n Counting Ratings for each product. \n')
+            print(self.data['Rate'].value_counts())
 
-        # Remove rows with null values
-        df = df.dropna()
+            self.data = self.data[(self.data.Rate !='Pigeon Favourite Electric Kettle??????(1.5 L, Silver, Black)') 
+                    & (self.data.Rate != "Bajaj DX 2 L/W Dry Iron") 
+                    & (self.data.Rate !='Nova Plus Amaze NI 10 1100 W Dry Iron?ÃÂ¿?ÃÂ¿(Grey & Turquoise)')]
+            
+            print('\n As we unexpectedly got noisy data or irrelevant information that can negatively impact data analysis.\n'
+            'Then deleted those values or rows in dataset.')
+            print('Finally, After deleting noisy data. Counting rating for each product.')
+            print('\n',self.data['Rate'].value_counts())
 
-        return df  # Return the cleaned DataFrame
+            print('\n Summary of the Dataset : \n',self.data.describe())
+            print('Data Transformation Successfully done!')
+        else:
+            print('No Data to Transform.')
 
-    def loading(self, df):
+    def loading(self):
         # Save the processed DataFrame to a CSV file
-        output_file = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Processed_Dataset.csv'
-        df.to_csv(output_file, index=False)  # Write the DataFrame to CSV
-        return output_file  # Return the file path for confirmation
+        #output_file = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Processed_Dataset.csv'
+        if self.data is not None:
+            self.data.to_csv(self.output_filename, index=False,mode='w')  # Write the DataFrame to CSV
+            path_to = 'Customer Review Insights Project -> Project -> data -> Processed_Dataset.csv'
+            print('\nSuccessfully Data Loaded to Target Destination / Location. with location: ',path_to)
+        else:
+            print('No Data is to Load. ')
+    
+    def run(self):
+        """Execute the ETL Pipeline. """
+        self.extract()
+        self.transform()
+        self.loading()
+
 
 if __name__ == '__main__':
-    file_name = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Dataset-SA.csv'
-    data_reader = nlp(file_name)
+    in_file_name = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Dataset-SA.csv'
+    out_filename = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Processed_Dataset.csv'
 
-    # Extract the data
-    datas = data_reader.extract()
-    print("Extracted Data:")
-    print(datas)
+    ETL = nlp(in_file_name,out_filename)
+    ETL.run()
 
-    # Transform the data
-    transformed_data = data_reader.transform(datas)
-    print("Transformed Data:")
-    print(transformed_data)
-
-    # Load the processed data to a CSV file
-    output_file_path = data_reader.loading(transformed_data)
-    print(f"Data transformed and saved to: {output_file_path}")
