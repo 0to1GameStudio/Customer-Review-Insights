@@ -1,7 +1,7 @@
 import pandas as pd
+from database_data import CSV_SQL
 
 print('NLP Pre-Processing...')
-
 # Setting up or loading CSV file into Python environment.
 class nlp:
     def __init__(self,input_filename,output_filename):
@@ -54,11 +54,12 @@ class nlp:
 
     def loading(self):
         # Save the processed DataFrame to a CSV file
-        #output_file = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Processed_Dataset.csv'
         if self.data is not None:
             self.data.to_csv(self.output_filename, index=False,mode='w')  # Write the DataFrame to CSV
             path_to = 'Customer Review Insights Project -> Project -> data -> Processed_Dataset.csv'
             print('\nSuccessfully Data Loaded to Target Destination / Location. with location: ',path_to)
+            print('Updating those records or data to the database - PostgreSQL',self.data.shape)
+            CSV_SQL(self.data)
         else:
             print('No Data is to Load. ')
     
