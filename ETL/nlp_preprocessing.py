@@ -42,7 +42,7 @@ class nlp:
                     & (self.data.Rate != "Bajaj DX 2 L/W Dry Iron") 
                     & (self.data.Rate !='Nova Plus Amaze NI 10 1100 W Dry Iron?ÃÂ¿?ÃÂ¿(Grey & Turquoise)')]
             
-            print('\n As we unexpectedly got noisy data or irrelevant information that can negatively impact data analysis.\n'
+            print('\n As unexpectedly we got noisy data or irrelevant information that can negatively impact data analysis.\n'
             'Then deleted those values or rows in dataset.')
             print('Finally, After deleting noisy data. Counting rating for each product.')
             print('\n',self.data['Rate'].value_counts())
