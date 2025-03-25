@@ -20,39 +20,46 @@ class CSV_SQL:
                 'destination to the database for Analysis and Reporting\n')
                 
                 df = pd.read_csv(self.input_file)
-                # Columns - product_name,product_price,Rate,Review,Summary,Sentiment
+                # Columns - product_name,product_price,rate,review,summary,sentiment
 
-                selected_columns_fact = ['Rate','Sentiment']
+                selected_columns_fact = ['product_name','review','rate','sentiment']
                 selected_columns_prod_dim = ['product_name','product_price']
-                selected_columns_review_sum = ['Review','Summary']
+                selected_columns_review_sum = ['review','summary']
                 fact_reviews = df[selected_columns_fact]
                 product_dim = df[selected_columns_prod_dim]
                 review_summary_dim = df[selected_columns_review_sum]
-                
-                # Testing if the data is correctly imported from csv.
-                #print(fact_reviews.head(),'\n',product_dim.head(),'\n',review_summary_dim.head())
-                
+
                 product_dim['product_id'] = range(1, len(product_dim) + 1)
                 review_summary_dim['review_summary_id'] = range(1,len(review_summary_dim) + 1)
                 final_sel_data_prod = ['product_id','product_name','product_price']
-                final_sel_data_rev_sum = ['review_summary_id','Review','Summary']
+                final_sel_data_rev_sum = ['review_summary_id','review','summary']
                 product_dimns = product_dim[final_sel_data_prod]
                 review_summary_dimns = review_summary_dim[final_sel_data_rev_sum]
 
                 print('\n',product_dimns,'\n\n',review_summary_dimns)
                 product_dim.to_sql('dim_product',conn,if_exists='replace',index=False)
                 review_summary_dim.to_sql('dim_review_summary',conn,if_exists='replace',index=False)
-                print('Values or Records inserted into database successfully. ')
+                print('Values or Records inserted into database successfully.')
 
-                #print(pd.read_sql('select product_id from dim_product',conn))
-                df_products = pd.read_sql('select product_id from dim_product',conn)
+                df_products = pd.read_sql('select product_id,product_name from dim_product',conn)
                 print('Read the table dim_product from database.')
-                df_reviews_sum = pd.read_sql('select review_summary_id from dim_review_summary',conn)
+                print(df_products.head())
+                df_reviews_sum = pd.read_sql('select review_summary_id, review from dim_review_summary',conn)
                 print('Read the table dim_review_summary from the database.')
+                print(df_reviews_sum.head())
+                
                 fact_mid_reviews = pd.concat([df_products,df_reviews_sum,fact_reviews],axis=1)
                 fact_mid_reviews['review_id'] = range(1,len(fact_mid_reviews) +  1)
-                print('\n Fact Table : \n',fact_mid_reviews.head(10))
-                #fact_mid_reviews.to_sql('fact_reviews',con=conn,if_exists='replace',index=False)
+
+                selected_columns_fact_t = ['review_id','product_id','review_summary_id','rate','sentiment']
+                fact_mid_reviews = fact_mid_reviews[selected_columns_fact_t]
+                # print('\n Fact Table : \n',fact_mid_reviews.iloc[40:50],'\n',fact_mid_reviews.info())
+               
+                fact_mid_reviews.to_sql('fact_reviews_product_summary',conn,if_exists='replace',index=False)
+                print('Successfully Loaded Fact Table records into database.')
+                data_fact = pd.read_sql('select * from fact_reviews_product_summary',conn)
+                print('\n',data_fact.head(20))
+
             else:
                 print('File doesn''t present in folder.')
 
@@ -61,6 +68,7 @@ class CSV_SQL:
 
         finally:
             if conn is not None:
+                conn.commit()
                 conn.close()
                 print('Database Disconnected.')
 

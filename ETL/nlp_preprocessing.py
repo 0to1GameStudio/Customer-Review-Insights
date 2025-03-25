@@ -48,6 +48,7 @@ class nlp:
             print('\n',self.data['Rate'].value_counts())
 
             print('\n Summary of the Dataset : \n',self.data.describe())
+            self.data.columns = self.data.columns.str.lower()
             print('Data Transformation Successfully done!')
         else:
             print('No Data to Transform.')
@@ -59,7 +60,7 @@ class nlp:
             path_to = 'Customer Review Insights Project -> Project -> data -> Processed_Dataset.csv'
             print('\nSuccessfully Data Loaded to Target Destination / Location. with location: ',path_to)
             print('Updating those records or data to the database - PostgreSQL',self.data.shape)
-            CSV_SQL(self.data)
+            CSV_SQL(self.data).csv_to_sql()
         else:
             print('No Data is to Load. ')
     
