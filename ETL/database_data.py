@@ -31,7 +31,7 @@ class CSV_SQL:
 
                 review_summary_dim = review_summary_dim.drop_duplicates(subset=['review'])
                 product_dim = product_dim.drop_duplicates(subset=['product_name'])
-                
+
                 product_dim['product_id'] = range(1, len(product_dim) + 1)
 
                 review_summary_dim['review_summary_id'] = range(1,len(review_summary_dim) + 1)
@@ -61,9 +61,9 @@ class CSV_SQL:
                 selected_columns_fact_t = ['review_id','product_id','review_summary_id','rate','sentiment']
                 fact_mid_reviews = fact_mid_reviews[selected_columns_fact_t]
                
-                # fact_mid_reviews.to_sql('fact_reviews_product_summary',conn,if_exists='replace',index=False,chunksize=4000)
+                fact_mid_reviews.to_sql('fact_reviews_product_summary',conn,if_exists='replace',index=False,chunksize=4000)
                 print('\n',fact_mid_reviews.iloc[20:40])
-                # print('Successfully Loaded Fact Table records into database.')
+                print('Successfully Loaded Fact Table records into database.')
 
             else:
                 print('File doesn''t present in folder.')
