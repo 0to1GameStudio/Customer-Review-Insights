@@ -3,7 +3,7 @@ from database_data import CSV_SQL
 
 print('NLP Pre-Processing...')
 # Setting up or loading CSV file into Python environment.
-class nlp:
+class nlp_ETL:
     def __init__(self,input_filename,output_filename):
         self.input_filename = input_filename
         self.output_filename = output_filename
@@ -38,9 +38,16 @@ class nlp:
             print('\n Counting Ratings for each product. \n')
             print(self.data['Rate'].value_counts())
 
-            self.data = self.data[(self.data.Rate !='Pigeon Favourite Electric Kettle??????(1.5 L, Silver, Black)') 
-                    & (self.data.Rate != "Bajaj DX 2 L/W Dry Iron") 
-                    & (self.data.Rate !='Nova Plus Amaze NI 10 1100 W Dry Iron?ÃÂ¿?ÃÂ¿(Grey & Turquoise)')]
+            noisy_values = [
+                'Pigeon Favourite Electric Kettle??????(1.5 L, Silver, Black)',
+                "Bajaj DX 2 L/W Dry Iron",
+                'Nova Plus Amaze NI 10 1100 W Dry Iron?ÃÂ¿?ÃÂ¿(Grey & Turquoise)'
+            ]
+            self.data = self.data[~self.data['Rate'].isin(noisy_values)]
+
+            # self.data = self.data[(self.data.Rate !='Pigeon Favourite Electric Kettle??????(1.5 L, Silver, Black)') 
+            #         & (self.data.Rate != "Bajaj DX 2 L/W Dry Iron") 
+            #         & (self.data.Rate !='Nova Plus Amaze NI 10 1100 W Dry Iron?ÃÂ¿?ÃÂ¿(Grey & Turquoise)')]
             
             print('\n As unexpectedly we got noisy data or irrelevant information that can negatively impact data analysis.\n'
             'Then deleted those values or rows in dataset.')
@@ -60,7 +67,8 @@ class nlp:
             path_to = 'Customer Review Insights Project -> Project -> data -> Processed_Dataset.csv'
             print('\nSuccessfully Data Loaded to Target Destination / Location. with location: ',path_to)
             print('Updating those records or data to the database - PostgreSQL',self.data.shape)
-            CSV_SQL(self.data).csv_to_sql()
+            csv_loader = CSV_SQL(self.output_filename)
+            csv_loader.csv_to_sql()
         else:
             print('No Data is to Load. ')
     
@@ -75,6 +83,5 @@ if __name__ == '__main__':
     in_file_name = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Dataset-SA.csv'
     out_filename = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Processed_Dataset.csv'
 
-    ETL = nlp(in_file_name,out_filename)
+    ETL = nlp_ETL(in_file_name,out_filename)
     ETL.run()
-
