@@ -62,7 +62,7 @@ class CSV_SQL:
                 fact_mid_reviews = fact_mid_reviews[selected_columns_fact_t]
                
                 fact_mid_reviews.to_sql('fact_reviews_product_summary',conn,if_exists='replace',index=False,chunksize=4000)
-                print('\n',fact_mid_reviews.iloc[20:40])
+                print('\n',fact_mid_reviews.head(20))
                 print('Successfully Loaded Fact Table records into database.')
 
             else:
