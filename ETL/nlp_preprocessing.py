@@ -10,7 +10,7 @@ class nlp_ETL:
         self.data = None
 
     def extract(self):
-        # Load the CSV file
+        # Extracts the CSV file
         try:
             self.data = pd.read_csv(self.input_filename)
             print('Data Extraction Succesful.\n')
@@ -19,14 +19,15 @@ class nlp_ETL:
 
 
     def transform(self):
-        # Convert 'Review' column to string and preprocess
+        # All the transformations will work in this function.
+
         print(self.data)        
         if self.data is not None:
         
             print('\n Deleting the Duplicates placed in dataset.\n ')
             # Remove rows with null values
             self.data = self.data.dropna()
-            
+            # Convert 'Review' column to string and preprocess with removal of redundant or noisy data.            
             self.data['Review'] = self.data['Review'].astype(str)
             self.data['Review'] = self.data['Review'].str.replace(r'[!,@,#]', '', regex=True)
             self.data['Review'] = self.data['Review'].str.lower()
@@ -38,6 +39,7 @@ class nlp_ETL:
             print('\n Counting Ratings for each product. \n')
             print(self.data['Rate'].value_counts())
 
+            # listing what kind of noisy data we got from csv file. Then delete and load it to dataframe.
             noisy_values = [
                 'Pigeon Favourite Electric Kettle??????(1.5 L, Silver, Black)',
                 "Bajaj DX 2 L/W Dry Iron",
@@ -55,6 +57,7 @@ class nlp_ETL:
             print('\n',self.data['Rate'].value_counts())
 
             print('\n Summary of the Dataset : \n',self.data.describe())
+            # Making all column names to lower-case.
             self.data.columns = self.data.columns.str.lower()
             print('Data Transformation Successfully done!')
         else:
@@ -67,6 +70,7 @@ class nlp_ETL:
             path_to = 'Customer Review Insights Project -> Project -> data -> Processed_Dataset.csv'
             print('\nSuccessfully Data Loaded to Target Destination / Location. with location: ',path_to)
             print('Updating those records or data to the database - PostgreSQL',self.data.shape)
+            # Calls the csv_sql of database_data python file to process data and store it into database.
             csv_loader = CSV_SQL(self.output_filename)
             csv_loader.csv_to_sql()
         else:
