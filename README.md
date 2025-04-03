@@ -1,4 +1,4 @@
-# Project Name: Customer Review Insights (An ETL Pipeline with Sentiment Analysis & Dimensional Modeling)
+# Customer Review Insights (An ETL Pipeline with Sentiment Analysis & Dimensional Modeling)
 ## Description:
   Designed and implemented an ETL pipeline to process e-commerce customer reviews, perform sentiment analysis using VADER, 
    and store the data in PostgreSQL using dimensional modeling, and currently integrating dashboards in Power BI/Tableau for analytical insights.
