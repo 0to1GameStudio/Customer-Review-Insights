@@ -77,7 +77,7 @@ class nlp_ETL:
             print('No Data is to Load. ')
     
     def run(self):
-        """Execute the ETL Pipeline. """
+        """Executing the ETL Pipeline. """
         self.extract()
         self.transform()
         self.loading()

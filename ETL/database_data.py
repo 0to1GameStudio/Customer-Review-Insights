@@ -42,13 +42,14 @@ class CSV_SQL:
                 # Creating Id's for the review summary dimension table.
                 review_summary_dim['review_summary_id'] = range(1,len(review_summary_dim) + 1)
 
-                # Again creating another dataframes to display if the data from data frames correctly.
+                # Again creating another dataframes to display if the data from data frames are correctly.
                 final_sel_data_prod = ['product_id','product_name','product_price']
                 final_sel_data_rev_sum = ['review_summary_id','product_name','review','summary']
                 product_dimns = product_dim[final_sel_data_prod]
                 review_summary_dimns = review_summary_dim[final_sel_data_rev_sum]
 
                 print('\n',product_dimns,'\n\n',review_summary_dimns)
+                # pushing data to database using .to_sql() function.
                 product_dim.to_sql('dim_product',conn,if_exists='replace',index=False)
                 review_summary_dim.to_sql('dim_review_summary',conn,if_exists='replace',index=False)
                 print('Values or Records inserted into database successfully.')
