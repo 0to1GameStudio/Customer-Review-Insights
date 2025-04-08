@@ -21,7 +21,7 @@ class nlp_ETL:
     def transform(self):
         # All the transformations will work in this function.
 
-        print(self.data)        
+        #print(self.data)        
         if self.data is not None:
         
             print('\n Deleting the Duplicates placed in dataset.\n ')
@@ -36,9 +36,6 @@ class nlp_ETL:
             self.data['Summary'] = self.data['Summary'].astype(str)
             self.data['Summary'] = self.data['Summary'].str.lower()
 
-            print('\n Counting Ratings for each product. \n')
-            print(self.data['Rate'].value_counts())
-
             # listing what kind of noisy data we got from csv file. Then delete and load it to dataframe.
             noisy_values = [
                 'Pigeon Favourite Electric Kettle??????(1.5 L, Silver, Black)',
@@ -51,12 +48,11 @@ class nlp_ETL:
             #         & (self.data.Rate != "Bajaj DX 2 L/W Dry Iron") 
             #         & (self.data.Rate !='Nova Plus Amaze NI 10 1100 W Dry Iron?ÃÂ¿?ÃÂ¿(Grey & Turquoise)')]
             
-            print('\n As unexpectedly we got noisy data or irrelevant information that can negatively impact data analysis.\n'
-            'Then deleted those values or rows in dataset.')
-            print('Finally, After deleting noisy data. Counting rating for each product.')
-            print('\n',self.data['Rate'].value_counts())
+            # As unexpectedly we got noisy data or irrelevant information that can negatively impact data analysis.\n'
+            # 'Then deleted those values or rows in dataset.
 
-            print('\n Summary of the Dataset : \n',self.data.describe())
+            # print('\n Summary of the Dataset : \n',self.data.describe())
+
             # Making all column names to lower-case.
             self.data.columns = self.data.columns.str.lower()
             print('Data Transformation Successfully done!')

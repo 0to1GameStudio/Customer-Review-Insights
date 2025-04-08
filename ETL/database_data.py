@@ -12,13 +12,13 @@ class CSV_SQL:
         try:
             alchemyEngine = create_engine('postgresql+psycopg2://postgres:nik123@127.0.0.1:5434/CRI',pool_recycle=3600)
             conn = alchemyEngine.connect()
-            print('Database connected.')
+            print('\n Database connected.')
             # Checks if the file is present in current working directory / folder.
             if os.path.exists(self.input_file):
                 
                 print('File is present in the folder : ',self.input_file)
-                print('\n Converting the processed dataset of csv format from target location / '
-                'destination to the database for Analysis and Reporting\n')
+                # print('\n Converting the processed dataset of csv format from target location / '
+                # 'destination to the database for Analysis and Reporting\n')
                 
                 # Read the data from csv file format.
                 df = pd.read_csv(self.input_file)
@@ -42,25 +42,14 @@ class CSV_SQL:
                 # Creating Id's for the review summary dimension table.
                 review_summary_dim['review_summary_id'] = range(1,len(review_summary_dim) + 1)
 
-                # Again creating another dataframes to display if the data from data frames are correctly.
-                final_sel_data_prod = ['product_id','product_name','product_price']
-                final_sel_data_rev_sum = ['review_summary_id','product_name','review','summary']
-                product_dimns = product_dim[final_sel_data_prod]
-                review_summary_dimns = review_summary_dim[final_sel_data_rev_sum]
-
-                print('\n',product_dimns,'\n\n',review_summary_dimns)
                 # pushing data to database using .to_sql() function.
                 product_dim.to_sql('dim_product',conn,if_exists='replace',index=False)
                 review_summary_dim.to_sql('dim_review_summary',conn,if_exists='replace',index=False)
-                print('Values or Records inserted into database successfully.')
+                print('Values or Records inserted into database - dimension tables successfully.')
 
                 # Reading the data from database to implement or store data into the fact - table.
                 df_products = pd.read_sql('select product_id,product_name from dim_product',conn)
-                print('Read the table dim_product from database.')
-                print(df_products.head())
                 df_reviews_sum = pd.read_sql('select review_summary_id,product_name, review from dim_review_summary',conn)
-                print('Read the table dim_review_summary from the database.')
-                print(df_reviews_sum.head())
                 
                 # Created a data frame that joins with two dimensional tables from database. For storing data inside fact table.
                 fact_mid_reviews = fact_reviews.merge(df_products, on="product_name", how="left")\
@@ -75,7 +64,7 @@ class CSV_SQL:
                
                # Last step is to push data to database.
                 fact_mid_reviews.to_sql('fact_reviews_product_summary',conn,if_exists='replace',index=False,chunksize=4000)
-                print('\n',fact_mid_reviews.head(20))
+                # print('\n',fact_mid_reviews.head(20))
                 print('Successfully Loaded Fact Table records into database.')
 
             else:
