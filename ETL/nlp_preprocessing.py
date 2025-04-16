@@ -1,7 +1,8 @@
 import pandas as pd
 from database_data import CSV_SQL
+from logging_config import logger
 
-print('NLP Pre-Processing...')
+logger.info('NLP Pre-Processing Started...')
 # Setting up or loading CSV file into Python environment.
 class nlp_ETL:
     def __init__(self,input_filename,output_filename):
@@ -13,9 +14,9 @@ class nlp_ETL:
         # Extracts the CSV file
         try:
             self.data = pd.read_csv(self.input_filename)
-            print('Data Extraction Succesful.\n')
+            logger.info('Data Extraction Succesful.\n')
         except Exception as e:
-            print(f'Error during extraction {e}')
+            logger.error(f'Error during extraction.')
 
 
     def transform(self):
@@ -24,7 +25,7 @@ class nlp_ETL:
         #print(self.data)        
         if self.data is not None:
         
-            print('\n Deleting the Duplicates placed in dataset.\n ')
+            logger.info('\n Deleting the Duplicates placed in dataset.\n ')
             # Remove rows with null values
             self.data = self.data.dropna()
             # Convert 'Review' column to string and preprocess with removal of redundant or noisy data.            
@@ -55,22 +56,22 @@ class nlp_ETL:
 
             # Making all column names to lower-case.
             self.data.columns = self.data.columns.str.lower()
-            print('Data Transformation Successfully done!')
+            logger.info('Data Transformation Successfully done!')
         else:
-            print('No Data to Transform.')
+            logger.warning('No Data to Transform.')
 
     def loading(self):
         # Save the processed DataFrame to a CSV file
         if self.data is not None:
             self.data.to_csv(self.output_filename, index=False,mode='w')  # Write the DataFrame to CSV
             path_to = 'Customer Review Insights Project -> Project -> data -> Processed_Dataset.csv'
-            print('\nSuccessfully Data Loaded to Target Destination / Location. with location: ',path_to)
-            print('Updating those records or data to the database - PostgreSQL',self.data.shape)
+            logger.info('\nSuccessfully Data Loaded to Target Destination / Location. with location:')
+            logger.info('Updating those records or data to the database - PostgreSQL')
             # Calls the csv_sql of database_data python file to process data and store it into database.
             csv_loader = CSV_SQL(self.output_filename)
             csv_loader.csv_to_sql()
         else:
-            print('No Data is to Load. ')
+            logger.warning('No Data is to Load.')
     
     def run(self):
         """Executing the ETL Pipeline. """

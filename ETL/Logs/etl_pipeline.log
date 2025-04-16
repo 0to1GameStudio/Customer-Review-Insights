@@ -1,0 +1,15 @@
+2025-04-16 22:44:07 - INFO - NLP Pre-Processing Started...
+2025-04-16 22:44:07 - INFO - Data Extraction Succesful.
+
+2025-04-16 22:44:07 - INFO - 
+ Deleting the Duplicates placed in dataset.
+ 
+2025-04-16 22:44:07 - INFO - Data Transformation Successfully done!
+2025-04-16 22:44:09 - INFO - 
+Successfully Data Loaded to Target Destination / Location. with location:
+2025-04-16 22:44:09 - INFO - Updating those records or data to the database - PostgreSQL
+2025-04-16 22:44:09 - INFO - 
+ Database connected.
+2025-04-16 22:44:10 - INFO - Values or Records inserted into database - dimension tables successfully.
+2025-04-16 22:44:16 - INFO - Successfully Loaded Fact Table records into database.
+2025-04-16 22:44:16 - INFO - Database Disconnected.

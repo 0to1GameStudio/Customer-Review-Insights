@@ -1,6 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 import os
+from logging_config import logger
 
 class CSV_SQL:
     def __init__(self,input_file):
@@ -12,11 +13,11 @@ class CSV_SQL:
         try:
             alchemyEngine = create_engine('postgresql+psycopg2://postgres:nik123@127.0.0.1:5434/CRI',pool_recycle=3600)
             conn = alchemyEngine.connect()
-            print('\n Database connected.')
+            logger.info('\n Database connected.')
             # Checks if the file is present in current working directory / folder.
             if os.path.exists(self.input_file):
                 
-                print('File is present in the folder : ',self.input_file)
+                # print('File is present in the folder : ',self.input_file)
                 # print('\n Converting the processed dataset of csv format from target location / '
                 # 'destination to the database for Analysis and Reporting\n')
                 
@@ -45,7 +46,7 @@ class CSV_SQL:
                 # pushing data to database using .to_sql() function.
                 product_dim.to_sql('dim_product',conn,if_exists='replace',index=False)
                 review_summary_dim.to_sql('dim_review_summary',conn,if_exists='replace',index=False)
-                print('Values or Records inserted into database - dimension tables successfully.')
+                logger.info('Values or Records inserted into database - dimension tables successfully.')
 
                 # Reading the data from database to implement or store data into the fact - table.
                 df_products = pd.read_sql('select product_id,product_name from dim_product',conn)
@@ -65,14 +66,14 @@ class CSV_SQL:
                # Last step is to push data to database.
                 fact_mid_reviews.to_sql('fact_reviews_product_summary',conn,if_exists='replace',index=False,chunksize=4000)
                 # print('\n',fact_mid_reviews.head(20))
-                print('Successfully Loaded Fact Table records into database.')
+                logger.info('Successfully Loaded Fact Table records into database.')
 
             else:
-                print('File doesn''t present in folder.')
+                logger.error('File doesn''t present in folder.')
 
         except Exception as e:
             # Displays message if there is problem with any data working from database - postgreSQL.
-            print('Database is not initialized. ',e)
+            logger.error('Database is not initialized. ')
 
         finally:
             # Finally if working with database is finished then the connection gets commited means data will store permanent to database.  
@@ -80,7 +81,7 @@ class CSV_SQL:
             if conn is not None:
                 conn.commit()
                 conn.close()
-                print('Database Disconnected.')
+                logger.info('Database Disconnected.')
 
 if __name__ == '__main__':
     processed_file = r'D:\NikhilData\Desktop\Webpages\Python Practice\Customer Review Insights Project\Project\data\Processed_Dataset.csv'
