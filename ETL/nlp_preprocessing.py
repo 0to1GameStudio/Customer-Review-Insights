@@ -14,7 +14,7 @@ class nlp_ETL:
         # Extracts the CSV file
         try:
             self.data = pd.read_csv(self.input_filename)
-            logger.info('Data Extraction Succesful.\n')
+            logger.info('Data Extraction Succesful.')
         except Exception as e:
             logger.error(f'Error during extraction.')
 
@@ -25,7 +25,7 @@ class nlp_ETL:
         #print(self.data)        
         if self.data is not None:
         
-            logger.info('\n Deleting the Duplicates placed in dataset.\n ')
+            logger.info('Deleting the Duplicates placed in dataset.')
             # Remove rows with null values
             self.data = self.data.dropna()
             # Convert 'Review' column to string and preprocess with removal of redundant or noisy data.            
@@ -65,7 +65,7 @@ class nlp_ETL:
         if self.data is not None:
             self.data.to_csv(self.output_filename, index=False,mode='w')  # Write the DataFrame to CSV
             path_to = 'Customer Review Insights Project -> Project -> data -> Processed_Dataset.csv'
-            logger.info('\nSuccessfully Data Loaded to Target Destination / Location. with location:')
+            logger.info('Successfully Data Loaded to Target Destination / Location. with location:')
             logger.info('Updating those records or data to the database - PostgreSQL')
             # Calls the csv_sql of database_data python file to process data and store it into database.
             csv_loader = CSV_SQL(self.output_filename)

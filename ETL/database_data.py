@@ -13,7 +13,7 @@ class CSV_SQL:
         try:
             alchemyEngine = create_engine('postgresql+psycopg2://postgres:nik123@127.0.0.1:5434/CRI',pool_recycle=3600)
             conn = alchemyEngine.connect()
-            logger.info('\n Database connected.')
+            logger.info('Database connected.')
             # Checks if the file is present in current working directory / folder.
             if os.path.exists(self.input_file):
                 
