@@ -1,11 +1,11 @@
-#Customer Review Insights (An ETL Pipeline with Sentiment Analysis & Dimensional Modeling)
+# Customer Review Insights (An ETL Pipeline with Sentiment Analysis & Dimensional Modeling)
 
 ### Description:
   Designed and implemented an ETL pipeline to process e-commerce customer reviews, perform
   sentiment analysis using VADER, and store the data in PostgreSQL using dimensional modeling.
   Currently integrating dashboards in Power BI/Tableau for analytical insights.
 
-  ## Key Responsiblities:
+  ## Key Responsibilities:
    o Designed and implemented an ETL pipeline to extract, transform, and load customer reviews
   from CSV into PostgreSQL.
   o Developed dimensional modeling with fact and dimension for analytical queries.
@@ -15,4 +15,4 @@
   rating distribution, and review trends.
   o Planned orchestration with Apache Airflow to automate the pipeline (upcoming).
 
-  ###Technology Stack: Python, PostgreSQL, Pandas, SQLAlchemy, Tableau/ PowerBI, Apache Airflow (Planned), VADER Sentiment Analysis
+  ### Technology Stack: Python, PostgreSQL, Pandas, SQLAlchemy, Tableau/ PowerBI, Apache Airflow (Planned), VADER Sentiment Analysis
