@@ -9,4 +9,4 @@ Python libraries -
   Data Processing & Validation - pandas
   Visualizations -  matplotlib
   Database - psycopg2, SqlAlchemy.
-  NLP or sentiment analysis - TextBlob, Hugging-Face (Transformers).
+  NLP or sentiment analysis - VADER.
